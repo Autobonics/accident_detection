@@ -10,6 +10,9 @@ long duration;
 float distanceCm;
 float distanceInch;
 
+//Tilt sensor
+
+
 #define wifiLedPin 2
 
 //Firebase
