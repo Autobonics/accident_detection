@@ -6,7 +6,7 @@ from firebase_admin import db
 class CloudData:
     def __init__(self, reference):
         cred_obj = credentials.Certificate(
-            "F:\Autobonics\college\accident_detection\python\accident-detection-c160e-firebase-adminsdk-w3jro-8c4563d818.json"
+            "accident-detection-c160e-firebase-adminsdk-w3jro-8c4563d818.json"
         )
 
         self.default_app = firebase_admin.initialize_app(
@@ -19,8 +19,8 @@ class CloudData:
         data = {
             "devices": {
                 "LxjBZjUk76ZAFhCijKcXSERoHvX2":{
-                    "reading": {
-                        "isSleping": isSleeping,
+                    "reading2": {
+                        "isSleeping": isSleeping,
                     }
                 }
             }

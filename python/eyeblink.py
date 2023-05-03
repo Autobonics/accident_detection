@@ -72,6 +72,9 @@ def main():
                 drowzy_state = "drowzy" if EAR < 0.2 else "active"
                 if(EAR < 0.2):
                     print("DDDDD")
+                    cloud.upload(True)
+                else:
+                    cloud.upload(False)
                 image = cv2.putText(image, f"state: {drowzy_state}", (0, 250),
                                     cv2.FONT_HERSHEY_TRIPLEX, 2, (0, 255, 0), 4, cv2.LINE_AA)
                 cv2.imshow(f"EyeBlink : ", image)

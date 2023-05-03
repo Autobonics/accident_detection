@@ -1,6 +1,8 @@
+#define tilt 33
+
 //Ultrasonics sensor
-const int trigPin = 12;
-const int echoPin = 13;
+const int trigPin = 13;
+const int echoPin = 12;
 
 //define sound speed in cm/uS
 #define SOUND_SPEED 0.034
@@ -57,6 +59,8 @@ void setup() {
  
   pinMode(wifiLedPin, INPUT);
   digitalWrite(wifiLedPin, LOW);
+
+  pinMode(tilt, INPUT);
    
   //WIFI
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -116,15 +120,19 @@ void setup() {
 
 void loop() {
   readDistance();
+  readTilt();
   printData();
-  updateData();
+  updateData(false);
 }
 
-void updateData() {
-  if (Firebase.ready() && (millis() - sendDataPrevMillis > 5000 || sendDataPrevMillis == 0))
+bool isTilt = false;
+
+void updateData(bool ispdate) {
+  if (Firebase.ready() && (ispdate || millis() - sendDataPrevMillis > 1000 || sendDataPrevMillis == 0))
   {
     sendDataPrevMillis = millis();
     FirebaseJson json;
+    json.set("tilt", isTilt);
     json.set("d", distanceCm);
     json.set(F("ts/.sv"), F("timestamp"));
     Serial.printf("Set json... %s\n", Firebase.RTDB.set(&fbdo, path.c_str(), &json) ? "ok" : fbdo.errorReason().c_str());
@@ -132,6 +140,11 @@ void updateData() {
   }
 }
 
+void readTilt(){
+  bool prvs = isTilt;
+  isTilt = digitalRead(tilt);
+  if(isTilt != prvs) updateData(true);
+}
 
 
 void printData() {
@@ -140,6 +153,8 @@ void printData() {
     printDataPrevMillis = millis();
     Serial.print("Distance in cm: ");
     Serial.println(distanceCm);
+    Serial.print("Tilt: ");
+    Serial.println(isTilt);
   }
 }
 
